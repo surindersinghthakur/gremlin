@@ -1,0 +1,175 @@
+.chevron::before {
+    border-style: solid;
+    border-width: 0.15em 0.15em 0 0;
+    content: "";
+    display: inline-block;
+    height: 0.35em;
+    left: 0.15em;
+    position: relative;
+    top: 0.3em;
+    vertical-align: top;
+    width: 0.35em;
+}
+
+.sidebar {
+    overflow-x: hidden;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    transition: 0.3s;
+    background: #f2f5f5;
+    color: #00010b;
+    width: 60px;
+
+    .content > button {
+        display: block;
+        width: 85%;
+        border: none;
+        margin: 0;
+        padding: 5px; /* top right bottom left */
+        text-align: left;
+        background-color: #279191;
+        font-size: 11px;
+        color: #000;
+    }
+
+    &.expanded {
+        width: 150px;
+
+        .header {
+            h1 {
+                margin-left: 0px;
+            }
+            .chevron {
+                margin-left: 0px;
+                &::before {
+                    transform: rotate(-135deg);
+                }
+            }
+        }
+        .content {
+            .link {
+                .content {
+                    .title {
+                        max-width: 150px; /* Adjusted the max-width */
+                        display: block; /* Added to make titles visible */
+                        font-size: 16px;
+                    }
+                    .icon {
+                        margin-right: 3px;
+                    }
+                }
+                .children {
+                    .content {
+                        padding-left: 30px;
+                    }
+                }
+            }
+        }
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        background: #f2f5f4;
+
+        h1 {
+            font-size: 20px;
+            color: #0e0000;
+            margin: 0;
+            flex: 1;
+            transition: 0.3s;
+            margin-left: -100px;
+        }
+
+        .chevron {
+            color: #0e0000;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-left: -25px;
+            padding: 10px;
+            min-width: 20px;
+            height: 20px;
+            display: block;
+            text-align: center;
+
+            &::before {
+                transition: 0.3s;
+                transform: rotate(45deg);
+            }
+
+            &:hover {
+                color: white;
+            }
+        }
+    }
+
+    .content {
+        .link {
+            .children {
+                .content {
+                    color: #0e0000;
+                    background: #00010d;
+                    padding-left: 30px;
+                    padding-left: 0px;
+
+                    &.active {
+                        background: #191a27;
+                    }
+                }
+            }
+            .content {
+                font-size: 11px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 10px;
+                cursor: pointer;
+                transition: 0.3s;
+
+                &:hover {
+                    background: #0f1017;
+                    .title {
+                        color: white;
+                    }
+                    svg {
+                        fill: white;
+                    }
+                }
+
+                &.active {
+                    background: #0f1017;
+                    .title {
+                        color: white;
+                    }
+                }
+
+                .icon {
+                    flex: 0 0 30px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-right: 0px;
+                }
+                .title {
+                    flex: 1;
+                    color: #0e0000;
+                    transition: 0.3s;
+                    max-width: 150px; /* Adjusted the max-width */
+                    overflow: hidden;
+                }
+                .titles {
+                    flex: 1;
+                    display: none;
+                    color: #e50707;
+                    transition: 0.3s;
+                    max-width: 0px;
+                    overflow: hidden;
+                }
+            }
+        }
+    }
+}

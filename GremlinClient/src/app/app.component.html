@@ -1,0 +1,6 @@
+<ngx-ui-loader></ngx-ui-loader>
+
+<my-sidebar [isExpanded]="sidebarExpanded" (toggleSidebar)="sidebarExpanded = !sidebarExpanded"></my-sidebar>
+<div [ngClass]="{'sidebarExpanded': sidebarExpanded }">
+    <router-outlet></router-outlet>
+</div>

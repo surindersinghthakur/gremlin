@@ -1,0 +1,22 @@
+<div class="table-container" [ngStyle]="{'max-height': maxHeight, 'max-width': maxWidth}">
+    <table class="table">
+      <thead>
+        <tr class="table-primary">
+          <th scope="col" *ngIf="showCheckboxColumn">#</th>
+          <th *ngFor="let column of columns" (click)="onHeaderClick(column.key)">
+            {{ column.displayText }}
+            <i *ngIf="sortColumn === column.key && sortDirection === 'asc'" class="bi bi-arrow-up"></i>
+            <i *ngIf="sortColumn === column.key && sortDirection === 'desc'" class="bi bi-arrow-down"></i>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of data; let i = index" (click)="onRowClick(i, row)" [class.highlight]="selectedRowIndex === i">
+          <th scope="row" *ngIf="showCheckboxColumn">
+            <input type="checkbox" [checked]="row.selected" (change)="toggleCheckbox(row)" />
+          </th>
+          <td *ngFor="let column of columns">{{ row[column.key] }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

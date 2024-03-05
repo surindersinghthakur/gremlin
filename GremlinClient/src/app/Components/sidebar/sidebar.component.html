@@ -1,0 +1,26 @@
+
+<div class="sidebar" [ngClass]="{ expanded: isExpanded }">
+    <div class="header">
+        <h1 class="title">Patterson</h1>
+        <div class="toggle" (click)="handleSidebarToggle()">
+            <span class="chevron"></span>
+        </div>
+    </div>
+    <div class="content flex-column mb-auto">
+        <div class="link" [routerLink]="['/count']" [routerLinkActive]="'active'">
+            <div class="content">
+                <div class="title">Counts</div>
+            </div>
+        </div>
+        <div class="link" [routerLink]="['/dso']" [routerLinkActive]="'active'">
+            <div class="content">
+                <div class="title">Dso</div>
+            </div>
+        </div>
+        <div class="link" [routerLink]="['/practice']" [routerLinkActive]="'active'">
+            <div class="content">
+                <div class="title">Practice</div>
+            </div>
+        </div>
+    </div>
+</div>

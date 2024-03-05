@@ -1,0 +1,80 @@
+<div class="main-content">
+    <div class="modal-content">
+        <h4>Adding Practice</h4>
+        <form (ngSubmit)="onAddLocation()" [formGroup]="locationForm">
+          <div class="row">
+            <label for="name" class="col-sm-1 col-form-label">Practice Id:</label>
+            <div class="col-sm-5">
+               <input type="text" class="form-control form-control-sm" id="practiceId" formControlName="practiceId" placeholder="Practice Id">
+            </div>
+         </div>
+    
+           <div class="row">
+               <label for="name" class="col-sm-1 col-form-label">Name:</label>
+               <div class="col-sm-5">
+                  <input type="text" class="form-control form-control-sm" id="name" formControlName="name" placeholder="Name">
+               </div>
+            </div>
+    
+            <div class="row">
+                <label for="name" class="col-sm-1 col-form-label">Address:</label>
+                <div class="col-sm-5">
+                   <input type="text" class="form-control form-control-sm" id="address1" formControlName="address1" placeholder="Address">
+                </div>
+            </div>
+    
+            <div class="row">
+                <label for="name" class="col-sm-1 col-form-label">City:</label>
+                <div class="col-sm-5">
+                   <input type="text" class="form-control form-control-sm" id="city" formControlName="city" placeholder="City">
+                </div>
+            </div>
+    
+            <div class="row">
+                <label for="name" class="col-sm-1 col-form-label">State:</label>
+                <div class="col-sm-5">
+                   <input type="text" class="form-control form-control-sm" id="state" formControlName="state" placeholder="State">
+                </div>
+            </div>
+    
+            <div class="row">
+                <label for="name" class="col-sm-1 col-form-label">Zipcode:</label>
+                <div class="col-sm-5">
+                   <input type="text" class="form-control form-control-sm" id="zipcode" formControlName="zipcode" placeholder="Zipcode">
+                </div>
+            </div>
+    
+            <div class="row">
+                <label for="name" class="col-sm-1 col-form-label">Phone#:</label>
+                <div class="col-sm-5">
+                   <input type="text" class="form-control form-control-sm" id="phoneNumber" formControlName="phoneNumber" placeholder="Phone Number">
+                </div>
+            </div>
+    
+            <div class="row">
+                <label for="name" class="col-sm-1 col-form-label">Reports To Region:</label>
+                <div class="col-sm-5">
+                   <input type="text" class="form-control form-control-sm" id="reportsToRegion" formControlName="reportsToRegion" placeholder="Reports To Region">
+                </div>
+            </div>
+    
+            <div class="row">
+                <label for="name" class="col-sm-1 col-form-label">Longitude:</label>
+                <div class="col-sm-5">
+                   <input type="text" class="form-control form-control-sm" id="longitude" formControlName="longitude" placeholder="Longitude">
+                </div>
+            </div>
+    
+            <div class="row">
+                <label for="name" class="col-sm-1 col-form-label">Latitude:</label>
+                <div class="col-sm-5">
+                   <input type="text" class="form-control form-control-sm" id="latitude" formControlName="latitude" placeholder="Latitude">
+                </div>
+            </div>
+    
+          <div class="text-end col-10">
+            <button type="submit" class="btn btn-primary btn-sm">Add Location</button>
+          </div>
+        </form>
+    </div>
+</div>

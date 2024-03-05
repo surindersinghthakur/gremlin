@@ -1,0 +1,45 @@
+<div class="main-content">
+    <div class="row mb-1">
+        <label for="state" class="col-sm-1 col-form-label">Enter State:</label>
+        <div class="col-sm-4">
+            <input type="text" class="col -4 form-control form-control-sm" id="state" [(ngModel)]="searchState" required placeholder ="State">
+        </div>
+
+        <div class="col-1">
+            <button type="button" class="btn btn-primary btn-sm" (click)="fetchDataForGrids()">Search</button>
+          </div>
+    </div>
+    
+  <!--  <div class="row">
+        <div class="col-2">
+          <button type="button" class="btn btn-primary btn-sm" (click)="openPracticePayloadFormDialog()">Open Practice Form</button>
+        </div>
+
+        <div class="col-2">
+            <button type="button" class="btn btn-primary btn-sm" (click)="openLocationPayloadFormDialog()">Open Location Form</button>
+        </div>
+    </div> -->
+
+</div>
+
+
+<div class="main-content">
+    <div class="row">
+      <div class="col-12">
+        <app-shared-datagrid
+          [data]="practiceData"
+          [columns]="practiceColumns"
+          (selectRow)="onPracticeRowSelected($event)"
+        ></app-shared-datagrid>
+      </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+          <app-shared-datagrid
+            [data]="locationData"
+            [columns]="locationColumns"
+          ></app-shared-datagrid>
+        </div>
+      </div>
+  </div>
