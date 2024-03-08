@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CdkConnectedOverlay} from '@angular/cdk/overlay';
 import { ToastrModule } from 'ngx-toastr';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,6 +22,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PayloadComponent } from './Components/payload-practice/payload-practice.component';
 import { PayloadLocationComponent } from './Components/payload-location/payload-location.component';
+import { PopupLocationComponent } from './Components/popup-location/popup-location.component';
 
 
 @NgModule({
@@ -33,6 +35,7 @@ import { PayloadLocationComponent } from './Components/payload-location/payload-
     SharedDatagridComponent,
     PayloadComponent,
     PayloadLocationComponent,
+    PopupLocationComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,6 +55,7 @@ import { PayloadLocationComponent } from './Components/payload-location/payload-
       positionClass: 'toast-top-right',
       preventDuplicates: true,
     }),
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

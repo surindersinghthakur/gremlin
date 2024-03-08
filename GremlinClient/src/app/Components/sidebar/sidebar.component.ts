@@ -6,7 +6,7 @@ import { Component, EventEmitter, Input, Output,OnInit, ViewChild  } from '@angu
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent {
-  @Input() isExpanded: boolean = true;
+  @Input() isExpanded: boolean = false;
   @Output() toggleSidebar: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor() { }

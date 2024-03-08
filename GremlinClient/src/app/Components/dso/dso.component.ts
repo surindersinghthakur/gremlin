@@ -4,6 +4,7 @@ import { GremlinapiService } from 'src/app/services/gremlinapi.service';
 import { DataGridColumns } from 'src/app/models/data-grid-columns';
 import { DsoPayloadModel } from 'src/app/models/dso-payload-model';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dso',
@@ -26,7 +27,8 @@ export class DsoComponent {
     website: ''
   };
 
-  constructor(private gremlinapiService:GremlinapiService, private ngxUiLoaderService:NgxUiLoaderService) {
+  constructor(private gremlinapiService:GremlinapiService, private ngxUiLoaderService:NgxUiLoaderService,
+    private snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
@@ -41,12 +43,34 @@ export class DsoComponent {
         this.dsoData = data;
         // Populate errorLogDetailsColumns based on your requirements
         this.dsoColumns = this.createDataGridColumns(); // Adjust this function accordingly
+        this.showSuccessMessage('Data loaded successfully.'); // Display success message
       },
       (error) => {
         this.ngxUiLoaderService.stop();
         console.error('Error loading error log details:', error);
+        this.showErrorMessage('Failed to load data. Please try again.'); // Display error message
       }
     );
+  }
+  
+  // Function to display a success message using MatSnackBar
+  private showSuccessMessage(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      duration: 5000, // Duration for which the message will be displayed in milliseconds
+      horizontalPosition: 'center', // Positioning the message horizontally
+      verticalPosition: 'top', // Positioning the message vertically
+      panelClass: 'success-snackbar' // You can add a custom CSS class for styling
+    });
+  }
+  
+  // Function to display an error message using MatSnackBar
+  private showErrorMessage(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      duration: 5000, // Duration for which the message will be displayed in milliseconds
+      horizontalPosition: 'center', // Positioning the message horizontally
+      verticalPosition: 'top', // Positioning the message vertically
+      panelClass: 'error-snackbar' // You can add a custom CSS class for styling
+    });
   }
 
   createDataGridColumns(): DataGridColumns[] {
@@ -54,7 +78,7 @@ export class DsoComponent {
     // Example:
     return [
       { key: 'Name', displayText: 'Name' },
-      { key: 'DsoId', displayText: 'Dso Id' },
+     // { key: 'DsoId', displayText: 'Dso Id' },
       { key: 'Address', displayText: 'Address' },
       { key: 'City', displayText: 'City' },
       { key: 'State', displayText: 'State' },
@@ -64,18 +88,20 @@ export class DsoComponent {
       // Add more columns as needed
     ];
   }
-
+  
   addDso() {
     this.gremlinapiService.addDso(this.dsoPayload).subscribe(
       (response: any) => {
         // Handle the success response if needed
         console.log('DSO added successfully:', response);
+        this.showSuccessMessage('DSO added successfully.'); // Display success message
         // Optionally, reset the form after successful submission
         this.resetForm();
       },
-      (error:any) => {
+      (error: any) => {
         // Handle the error response if needed
         console.error('Error adding DSO:', error);
+        this.showErrorMessage('Failed to add DSO. Please try again.'); // Display error message
       }
     );
   }

@@ -1,0 +1,54 @@
+<div class="main-content">
+    <div class="row mb-1">
+      <label for="state" class="col-sm-1 col-form-label" style="font-weight: bold;">State:</label>
+      <div class="col-sm-2">
+        <input type="text" class="col-3 form-control form-control-sm" id="state" [(ngModel)]="searchState" required placeholder="State">
+      </div>
+  
+      <label for="state" class="col-sm-1 col-form-label" style="font-weight: bold;">Name:</label>
+      <div class="col-sm-2">
+        <input type="text" class="col-2 form-control form-control-sm" id="state" [(ngModel)]="searchName" required placeholder="Name">
+      </div>
+  
+      <div class="col-sm-4 d-flex align-items-center">
+        <label class="me-2" for="nameDropdown" style="font-weight: bold;">Select Dso:</label>
+        <div style="width: 200px;">
+          <select id="nameDropdown" [(ngModel)]="selectedNameDso" class="form-control form-control-sm">
+            <option value="">None</option> <!-- Empty value for no selection -->
+            <option *ngFor="let nameDso of namesListDso" [value]="nameDso">{{ nameDso }}</option>
+          </select>
+        </div>
+      </div>
+      
+  
+      <div class="col-1">
+        <button type="button" class="btn btn-primary btn-sm" (click)="fetchDataForGrids()">Search</button>
+      </div>
+    </div>
+</div>
+
+<div class="main-content">
+      <div class="row"  *ngIf="practiceData.length > 0">
+        <div class="col-12">
+          <app-shared-datagrid
+            [data]="practiceData"
+            [columns]="practiceColumns"
+            [showCheckboxColumn]="showCheckboxColumn"
+            [currentPaginationPage]="currentPaginationPage"
+            [itemsPerPage]="itemsPerPage"
+            [totalItems]="totalItems"
+            (selectCheckbox)="onCheckboxSelected($event.checked, $event.row)"
+            (pageChange)="onPageChange($event)"
+            [maxHeight]="'400px'"
+          ></app-shared-datagrid>
+        </div>
+
+        <div class="row col-4">
+            <button type="button" class="btn btn-primary btn-sm m-2"  [disabled]="buttonDisabled" (click)="onPracticeRowSelectionformoveingLocations()">
+                Acquire Selected Location(s)
+              </button>
+        </div>
+    </div>
+
+</div>
+    
