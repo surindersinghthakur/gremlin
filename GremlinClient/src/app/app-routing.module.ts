@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { CountComponent } from './Components/count/count.component';
 import { DsoComponent } from './Components/dso/dso.component';
 import { PracticeComponent } from './Components/practice/practice.component';
+import { PopupLocationComponent } from './Components/popup-location/popup-location.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: 'practice',
     component: PracticeComponent
+  },
+  {
+    path: 'popupLocation',
+    component: PopupLocationComponent
   }
 ];
 
