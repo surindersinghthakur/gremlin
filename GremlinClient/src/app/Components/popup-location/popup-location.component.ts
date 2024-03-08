@@ -81,7 +81,7 @@ export class PopupLocationComponent {
           this.practiceColumns = this.createDataGridColumnsForPractice();
           this.totalItems = data.length;
           this.currentPaginationPage = 1;
-          this.showSuccessMessage('Practice data fetched successfully.'); 
+          //this.showSuccessMessage('Practice data fetched successfully.'); 
         },
         (error) => {
           this.ngxUiLoaderService.stop();
@@ -97,7 +97,7 @@ export class PopupLocationComponent {
           this.practiceColumns = this.createDataGridColumnsForPractice();
           this.totalItems = data.length;
           this.currentPaginationPage = 1;
-          this.showSuccessMessage('Practice data fetched successfully.'); 
+         // this.showSuccessMessage('Practice data fetched successfully.'); 
         },
         (error) => {
           this.ngxUiLoaderService.stop();

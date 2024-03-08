@@ -109,28 +109,33 @@ export class GremlinapiService {
   }
 
 
-  private parseApiResponse(response: string): Counts {
-    // Split the response string and extract the numeric values
-    const values = response.match(/\d+/g);
-  
-    // Check if values is not null and has the expected length
-    if (values !== null && values.length === 3) {
-      // Destructure the values array for better readability
-      const [totalDsos, totalPractices, totalLocations] = values.map(Number);
-  
-      // Create a Counts object with the extracted values
-      return {
-        totalDsos,
-        totalPractices,
-        totalLocations
-      };
-    } else {
-      // Handle the case where the values are not as expected
-      console.error('Invalid response format:', response);
-      // Return a default Counts object or throw an error based on your requirements
-      return { totalDsos: 0, totalPractices: 0, totalLocations: 0 };
-    }
+  private formatNumberWithCommas(number: number): string {
+    return number.toLocaleString();
   }
+  
+  private parseApiResponse(response: string): Counts {
+      // Split the response string and extract the numeric values
+      const values = response.match(/\d+/g) ?? [];
+    
+      // Check if values has the expected length
+      if (values.length === 3) {
+        // Destructure the values array for better readability
+        const [totalDsos, totalPractices, totalLocations] = values.map(Number);
+    
+        // Create a Counts object with the extracted values
+        return {
+          totalDsos,
+          totalPractices,
+          totalLocations
+        };
+      } else {
+        // Handle the case where the values are not as expected
+        console.error('Invalid response format:', response);
+        // Return a default Counts object or throw an error based on your requirements
+        return { totalDsos: 0, totalPractices: 0, totalLocations: 0 };
+      }
+  }
+
 
   private parseDsoApiResponse(response: any): DsoModel[] {
     try {

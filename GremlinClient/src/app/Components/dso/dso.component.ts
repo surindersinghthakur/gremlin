@@ -94,14 +94,14 @@ export class DsoComponent {
       (response: any) => {
         // Handle the success response if needed
         console.log('DSO added successfully:', response);
-        this.showSuccessMessage('DSO added successfully.'); // Display success message
+        //this.showSuccessMessage('DSO added successfully.'); // Display success message
         // Optionally, reset the form after successful submission
         this.resetForm();
       },
       (error: any) => {
         // Handle the error response if needed
         console.error('Error adding DSO:', error);
-        this.showErrorMessage('Failed to add DSO. Please try again.'); // Display error message
+        //this.showErrorMessage('Failed to add DSO. Please try again.'); // Display error message
       }
     );
   }

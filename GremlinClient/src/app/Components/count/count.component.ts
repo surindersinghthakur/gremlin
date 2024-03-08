@@ -25,12 +25,12 @@ export class CountComponent implements OnInit  {
         (response) => {
           this.apiResponse = response;
           this.ngxUiLoaderService.stop();
-          this.showSuccessMessage('Total counts loaded successfully.'); // Display success message
+          //this.showSuccessMessage('Total counts loaded successfully.'); // Display success message
         },
         (error) => {
           this.ngxUiLoaderService.stop();
           console.error('Error loading total counts:', error);
-          this.showErrorMessage('Failed to load total counts. Please try again.'); // Display error message
+          //this.showErrorMessage('Failed to load total counts. Please try again.'); // Display error message
         }
       );
     }

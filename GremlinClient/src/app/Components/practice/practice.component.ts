@@ -76,11 +76,11 @@ export class PracticeComponent {
           this.practiceColumns = this.createDataGridColumnsForPractice();
           this.totalItems = data.length;
           this.currentPaginationPage = 1;
-          this.showSuccessMessage('Practice data fetched successfully.'); 
+          //this.showSuccessMessage('Practice data fetched successfully.'); 
         },
         (error) => {
           this.ngxUiLoaderService.stop();
-          this.showErrorMessage('Error loading practice data');
+          //this.showErrorMessage('Error loading practice data');
         }
       );
       // Handle dsoId as needed, keeping in mind that selectedDso might be undefined
@@ -92,11 +92,11 @@ export class PracticeComponent {
           this.practiceColumns = this.createDataGridColumnsForPractice();
           this.totalItems = data.length;
           this.currentPaginationPage = 1;
-          this.showSuccessMessage('Practice data fetched successfully.'); 
+          //this.showSuccessMessage('Practice data fetched successfully.'); 
         },
         (error) => {
           this.ngxUiLoaderService.stop();
-          this.showErrorMessage('Error loading practice data');
+          //this.showErrorMessage('Error loading practice data');
         }
       );
     }
@@ -144,11 +144,11 @@ export class PracticeComponent {
         this.ngxUiLoaderService.stop();
         this.locationData = data;
         this.locationColumns = this.createDataGridColumnsForLocation();
-        this.showSuccessMessage('Location data fetched successfully.'); 
+        //this.showSuccessMessage('Location data fetched successfully.'); 
       },
       (error) => {
         this.ngxUiLoaderService.stop();
-        this.showErrorMessage('Error loading location data:');
+        //this.showErrorMessage('Error loading location data:');
       }
     );
   }
@@ -229,16 +229,16 @@ export class PracticeComponent {
             // Use map and concat to flatten the resulting array
             const flattenedArray: string[] = ([] as string[]).concat(...data.map((dso: any) => dso.Name));
             this.namesListDso = Array.from(new Set(flattenedArray));
-            this.showSuccessMessage('Dso Names fetched successfully.');
+            //this.showSuccessMessage('Dso Names fetched successfully.');
           } else {
             this.showErrorMessage('Unexpected data structure:');
           }
         } else {
-          this.showErrorMessage('Error in API response:');
+         // this.showErrorMessage('Error in API response:');
         }
       },
       (error) => {
-        this.showErrorMessage('Error fetching DSO names for dropdown:');
+        //this.showErrorMessage('Error fetching DSO names for dropdown:');
       }
     );
   }
