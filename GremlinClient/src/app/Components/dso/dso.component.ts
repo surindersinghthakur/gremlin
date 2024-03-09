@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { DsoModel } from 'src/app/models/dso-model';
 import { GremlinapiService } from 'src/app/services/gremlinapi.service';
 import { DataGridColumns } from 'src/app/models/data-grid-columns';
-import { DsoPayloadModel } from 'src/app/models/dso-payload-model';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { PopupDsoComponent } from '../popup-dso/popup-dso.component';
 
 @Component({
   selector: 'app-dso',
@@ -14,21 +15,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class DsoComponent {
   dsoData: DsoModel[] = [];
   dsoColumns: DataGridColumns[] = [];
-  dsoPayload: DsoPayloadModel = {
-    name: '',
-    address: '',
-    city: '',
-    state: '',
-    postalCode: '',
-    country: '',
-    phone: '',
-    phoneNumber: '',
-    email: '',
-    website: ''
-  };
 
   constructor(private gremlinapiService:GremlinapiService, private ngxUiLoaderService:NgxUiLoaderService,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar,private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -43,12 +32,12 @@ export class DsoComponent {
         this.dsoData = data;
         // Populate errorLogDetailsColumns based on your requirements
         this.dsoColumns = this.createDataGridColumns(); // Adjust this function accordingly
-        this.showSuccessMessage('Data loaded successfully.'); // Display success message
+        //this.showSuccessMessage('Data loaded successfully.'); // Display success message
       },
       (error) => {
         this.ngxUiLoaderService.stop();
         console.error('Error loading error log details:', error);
-        this.showErrorMessage('Failed to load data. Please try again.'); // Display error message
+        //this.showErrorMessage('Failed to load data. Please try again.'); // Display error message
       }
     );
   }
@@ -88,42 +77,21 @@ export class DsoComponent {
       // Add more columns as needed
     ];
   }
-  
-  addDso() {
-    this.gremlinapiService.addDso(this.dsoPayload).subscribe(
-      (response: any) => {
-        // Handle the success response if needed
-        console.log('DSO added successfully:', response);
-        //this.showSuccessMessage('DSO added successfully.'); // Display success message
-        // Optionally, reset the form after successful submission
-        this.resetForm();
-      },
-      (error: any) => {
-        // Handle the error response if needed
-        console.error('Error adding DSO:', error);
-        //this.showErrorMessage('Failed to add DSO. Please try again.'); // Display error message
-      }
-    );
-  }
-
-  resetForm(): void {
-    // Reset the form fields as needed
-    this.dsoPayload = {
-      name: '',
-      address: '',
-      city: '',
-      state: '',
-      postalCode: '',
-      country: '',
-      phone: '',
-      phoneNumber: '',
-      email: '',
-      website: ''
-    };
-  }
 
   onDsoDataGridRowSelected(selectedItems: DsoModel[]): void {
     // Handle the selected rows as needed
     console.log('Selected dso  Details:', selectedItems);
+  }
+
+  openAddDsoClick() {
+    const dialogRef = this.dialog.open(PopupDsoComponent, {
+      width: '1000px', // Set the width as per your requirement
+      // You can add more configuration options as needed
+    });
+  
+    // Optionally, subscribe to the afterClosed event to perform actions when the dialog is closed
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog closed with result:', result);
+    });
   }
 }

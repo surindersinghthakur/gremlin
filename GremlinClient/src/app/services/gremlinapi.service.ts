@@ -41,20 +41,20 @@ export class GremlinapiService {
   }
   
   //4th api calling for practice
-  searchPracticeDataByStateByStateOrName(state: string, param1: string, param2: string): Observable<PracticeModel[]> {
+  searchPracticeDataByStateByStateOrName(state: string, name: string, dsoId: string,pageNo: number,pazeSize: number): Observable<PracticeModel[]> {
     const apiUrl = `${this.baseApiUrl}/practice`;
     
     // Constructing the query parameters using the correct syntax
-    const urlWithParams = `${apiUrl}?state=${state}&name=${param1}&dsoId=${param2}`;
+    const urlWithParams = `${apiUrl}?state=${state}&name=${name}&dsoId=${dsoId}&pageNo=${pageNo}&pazeSize=${pazeSize}`;
   
     const output = this.http.get<any>(urlWithParams).pipe(
       map((response: any) => this.parsePracticeApiResponse(response))
     );
     return output;
   }
-
-  searchPracticeDataByDsoName(dsoId: string,limit:number): Observable<PracticeModel[]>{
-    const apiUrl = `${this.baseApiUrl}/practice/dso/${dsoId}/${limit}`;
+  //5th
+  searchPracticeDataByDsoName(dsoId: string, pageNo: number, pazeSize: number): Observable<PracticeModel[]>{
+    const apiUrl = `${this.baseApiUrl}/practice/dso/${dsoId}/?pageNo=${pageNo}&pazeSize=${pazeSize}`;
     return this.http.get(apiUrl).pipe(
       map((response: any) => this.parsePracticeDataByDsoName(response))
     );
@@ -114,27 +114,33 @@ export class GremlinapiService {
   }
   
   private parseApiResponse(response: string): Counts {
-      // Split the response string and extract the numeric values
-      const values = response.match(/\d+/g) ?? [];
-    
-      // Check if values has the expected length
-      if (values.length === 3) {
-        // Destructure the values array for better readability
-        const [totalDsos, totalPractices, totalLocations] = values.map(Number);
-    
-        // Create a Counts object with the extracted values
-        return {
-          totalDsos,
-          totalPractices,
-          totalLocations
-        };
-      } else {
-        // Handle the case where the values are not as expected
-        console.error('Invalid response format:', response);
-        // Return a default Counts object or throw an error based on your requirements
-        return { totalDsos: 0, totalPractices: 0, totalLocations: 0 };
-      }
+    // Split the response string and extract the numeric values
+    const values = response.match(/\d+/g) ?? [];
+  
+    // Check if values has the expected length
+    if (values.length === 3) {
+      // Destructure the values array for better readability
+      const [totalDsos, totalPractices, totalLocations] = values.map(Number);
+  
+      // Format the numeric values with commas
+      const formattedTotalDsos = totalDsos.toLocaleString();
+      const formattedTotalPractices = totalPractices.toLocaleString();
+      const formattedTotalLocations = totalLocations.toLocaleString();
+  
+      // Create a Counts object with the formatted values as strings
+      return {
+        totalDsos: formattedTotalDsos,
+        totalPractices: formattedTotalPractices,
+        totalLocations: formattedTotalLocations
+      };
+    } else {
+      // Handle the case where the values are not as expected
+      console.error('Invalid response format:', response);
+      // Return a default Counts object or throw an error based on your requirements
+      return { totalDsos: '0', totalPractices: '0', totalLocations: '0' };
+    }
   }
+  
 
 
   private parseDsoApiResponse(response: any): DsoModel[] {

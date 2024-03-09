@@ -23,6 +23,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PayloadComponent } from './Components/payload-practice/payload-practice.component';
 import { PayloadLocationComponent } from './Components/payload-location/payload-location.component';
 import { PopupLocationComponent } from './Components/popup-location/popup-location.component';
+import { PopupDsoComponent } from './Components/popup-dso/popup-dso.component';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { PopupLocationComponent } from './Components/popup-location/popup-locati
     PayloadComponent,
     PayloadLocationComponent,
     PopupLocationComponent,
+    PopupDsoComponent,
   ],
   imports: [
     BrowserModule,

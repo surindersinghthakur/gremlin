@@ -4,6 +4,7 @@ import { CountComponent } from './Components/count/count.component';
 import { DsoComponent } from './Components/dso/dso.component';
 import { PracticeComponent } from './Components/practice/practice.component';
 import { PopupLocationComponent } from './Components/popup-location/popup-location.component';
+import { PopupDsoComponent } from './Components/popup-dso/popup-dso.component';
 
 const routes: Routes = [
   {
@@ -19,8 +20,8 @@ const routes: Routes = [
     component: PracticeComponent
   },
   {
-    path: 'popupLocation',
-    component: PopupLocationComponent
+    path: 'popupDso',
+    component: PopupDsoComponent
   }
 ];
 

@@ -18,11 +18,10 @@
           <option *ngFor="let nameDso of namesListDso" [value]="nameDso">{{ nameDso }}</option>
         </select>
       </div>
-    </div>
-    
 
-    <div class="col-1">
-      <button type="button" class="btn btn-primary btn-sm" (click)="fetchDataForPracticeGrids()">Search</button>
+      <div class="col-1 ms-4">
+        <button type="button" class="btn btn-primary btn-sm" (click)="fetchDataForPracticeGrids(currentPaginationPage)">Search</button>
+      </div>
     </div>
   </div>
 </div>
@@ -47,15 +46,21 @@
           [data]="practiceData"
           [columns]="practiceColumns"
           [showCheckboxColumn]="showCheckboxColumn"
-          [currentPaginationPage]="currentPaginationPage"
-          [itemsPerPage]="itemsPerPage"
-          [totalItems]="totalItems"
           (selectRow)="onPracticeRowSelected($event)"
           (selectCheckbox)="onCheckboxSelected($event.checked, $event.row)"
-          (pageChange)="onPageChange($event)"
           [maxHeight]="'400px'"
         ></app-shared-datagrid>
       </div>
+
+      <div class="row">
+        <!--Pagination controls -->
+        <div class="pagination-controls" style="text-align: right;">
+        <button type="button" class="btn btn-primary btn-sm" (click)="fetchDataForPracticeGrids(currentPaginationPage - 1)" [disabled]="currentPaginationPage === 1">Previous</button>
+        <span class="m-1">{{ currentPaginationPage }}</span>
+        <button type="button" class="btn btn-primary btn-sm" (click)="fetchDataForPracticeGrids(currentPaginationPage + 1)" >Next</button>
+        </div>
+      </div>
+    </div>
 
       <div class="row" *ngIf="selectedCheckboxRows.length > 0">
         <div class="col-sm-8 d-flex align-items-center">
@@ -70,8 +75,10 @@
           <button type="button" class="btn btn-primary btn-sm m-2" (click)="onDsoNameSelected()">Acquire Selected Practice(s)</button>
         </div>
       </div>
-    </div>
+</div>
 
+
+<div class="main-content">
     <div class="row mt-5" *ngIf="locationData.length > 0">
         <div class="col-12">
           <app-shared-datagrid
@@ -83,18 +90,11 @@
 
         <div class="row" *ngIf="selectedLocationCheckboxRows.length > 0">
 
-          <!-- Button to trigger the modal -->
-          
-         <!-- <div class="col-8">
-            <label class="me-2" for="nameDropdown">Select Practice: </label>
-            <select id="nameDropdown" [(ngModel)]="selectedNamePractice">
-              <option *ngFor="let namePractice of namesListPractice" [value]="namePractice">{{ namePractice }}</option>
-            </select>-->
+          <!-- Button to trigger the pop-up for location -->
         <div class="col-3 mt-2">
           <button type="button" class="btn btn-primary btn-sm m-2" (click)="onLocationsSelected()">Acquire Selected Location(s)</button>
         </div>
-          </div>
-        </div>
-      </div>
-    
+     </div>
+    </div>
+   </div>
 

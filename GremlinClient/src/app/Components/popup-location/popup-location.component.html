@@ -22,7 +22,7 @@
       
   
       <div class="col-1">
-        <button type="button" class="btn btn-primary btn-sm" (click)="fetchDataForGrids()">Search</button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="fetchDataForPracticeGrids()">Search</button>
       </div>
     </div>
 </div>
@@ -34,11 +34,7 @@
             [data]="practiceData"
             [columns]="practiceColumns"
             [showCheckboxColumn]="showCheckboxColumn"
-            [currentPaginationPage]="currentPaginationPage"
-            [itemsPerPage]="itemsPerPage"
-            [totalItems]="totalItems"
             (selectCheckbox)="onCheckboxSelected($event.checked, $event.row)"
-            (pageChange)="onPageChange($event)"
             [maxHeight]="'400px'"
           ></app-shared-datagrid>
         </div>

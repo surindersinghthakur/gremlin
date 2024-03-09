@@ -11,9 +11,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class CountComponent implements OnInit  {
   apiResponse: Counts = {
-    totalDsos: 0,
-    totalPractices: 0,
-    totalLocations: 0,
+    totalDsos: '0',
+    totalPractices: '0',
+    totalLocations: '0',
   };
 
   constructor(private gremlinapiService: GremlinapiService,private ngxUiLoaderService:NgxUiLoaderService,

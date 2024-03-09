@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewContainerRef,Input} from '@angular/core';
+import { Component, ElementRef, ViewContainerRef,Input,Output,EventEmitter} from '@angular/core';
 import { GremlinapiService } from 'src/app/services/gremlinapi.service';
 import { PracticeModel } from 'src/app/models/practice-model';
 import { DataGridColumns } from 'src/app/models/data-grid-columns';
@@ -42,10 +42,12 @@ export class PracticeComponent {
   practiceDataForLocationMove: PracticeModel[] = [];
   practiceIdsAndDsoIds: MovePracticeToNewDso[] = [];
 
-  // Pagination properties
-  currentPaginationPage: number = 1;
-  itemsPerPage: number = 10; // Set your desired number of items per page
-  totalItems: number = 0;
+  //for pagination
+  @Input() currentPaginationPage: number = 1;
+  @Input() itemsPerPage: number = 10;
+  @Input() totalItems: number = 0;
+  @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
+  displayedData: any[] = [];
   
   
 
@@ -57,25 +59,28 @@ export class PracticeComponent {
     this.fetchDsoNamesForMovingPractice()
   }
 
-  fetchDataForPracticeGrids(): void {
+  fetchDataForPracticeGrids(currentPaginationPage: number): void {
     this.ngxUiLoaderService.start();
-    if (this.selectedNameDso) {
+
       // Check for leading or trailing whitespaces
       const selectedDso = this.dsoData.find((dso: any) => {
         // Check if the selectedName is included in the array of names
         return dso.Name.includes(this.selectedNameDso.trim());
       });
+
+      this.currentPaginationPage = currentPaginationPage;
     
       const dsoId: string = selectedDso
       ? (Array.isArray(selectedDso.DsoId) ? selectedDso.DsoId[0] : selectedDso.DsoId) || ''
       : '';
-      this.gremlinapiService.searchPracticeDataByDsoName(dsoId, 100).subscribe(
+      if (this.selectedNameDso) {
+
+      this.gremlinapiService.searchPracticeDataByDsoName(dsoId,this.currentPaginationPage, this.itemsPerPage).subscribe(
         (data: PracticeModel[]) => {
           this.ngxUiLoaderService.stop();
           this.practiceData = data;
           this.practiceColumns = this.createDataGridColumnsForPractice();
           this.totalItems = data.length;
-          this.currentPaginationPage = 1;
           //this.showSuccessMessage('Practice data fetched successfully.'); 
         },
         (error) => {
@@ -85,13 +90,12 @@ export class PracticeComponent {
       );
       // Handle dsoId as needed, keeping in mind that selectedDso might be undefined
     }else{
-      this.gremlinapiService.searchPracticeDataByStateByStateOrName(this.searchState, this.searchName, this.selectedNameDso ).subscribe(
+      this.gremlinapiService.searchPracticeDataByStateByStateOrName(this.searchState, this.searchName, dsoId,this.currentPaginationPage,this.itemsPerPage).subscribe(
         (data: PracticeModel[]) => {
           this.ngxUiLoaderService.stop();
           this.practiceData = data;
           this.practiceColumns = this.createDataGridColumnsForPractice();
           this.totalItems = data.length;
-          this.currentPaginationPage = 1;
           //this.showSuccessMessage('Practice data fetched successfully.'); 
         },
         (error) => {
@@ -106,7 +110,7 @@ export class PracticeComponent {
   createDataGridColumnsForPractice(): DataGridColumns[] {
     return [
       { key: 'name', displayText: 'Name' },
-     // { key: 'practiceId', displayText: 'Dso Id' },
+      { key: 'practiceId', displayText: 'Dso Id' },
       { key: 'address', displayText: 'Address' },
       { key: 'city', displayText: 'City' },
       { key: 'state', displayText: 'State' },
@@ -416,5 +420,9 @@ onPageChange(newPage: number): void {
   this.currentPaginationPage = newPage;
   // Optionally, fetch data based on the new page
   // Example: this.loadData();
+}
+
+changePages(): void {
+ 
 }
 }

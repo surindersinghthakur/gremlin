@@ -5,8 +5,6 @@ import { DataGridColumns } from 'src/app/models/data-grid-columns';
 import { LocationModel } from 'src/app/models/location-model';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { PayloadComponent } from '../payload-practice/payload-practice.component';
-import { PayloadLocationComponent } from '../payload-location/payload-location.component';
 import { DsoModel } from 'src/app/models/dso-model';
 import { MovePracticeToNewDso } from 'src/app/models/move-practice-to-new-dso';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -45,7 +43,7 @@ export class PopupLocationComponent {
 
   // Pagination properties
   currentPaginationPage: number = 1;
-  itemsPerPage: number = 10; // Set your desired number of items per page
+  itemsPerPage: number = 50; // Set your desired number of items per page
   totalItems: number = 0;
   
 
@@ -62,9 +60,9 @@ export class PopupLocationComponent {
     this.fetchDsoNamesForMovingPractice()
   }
 
-  fetchDataForGrids(): void {
+  fetchDataForPracticeGrids(): void {
     this.ngxUiLoaderService.start();
-    if (this.selectedNameDso) {
+
       // Check for leading or trailing whitespaces
       const selectedDso = this.dsoData.find((dso: any) => {
         // Check if the selectedName is included in the array of names
@@ -74,7 +72,9 @@ export class PopupLocationComponent {
       const dsoId: string = selectedDso
       ? (Array.isArray(selectedDso.DsoId) ? selectedDso.DsoId[0] : selectedDso.DsoId) || ''
       : '';
-      this.gremlinapiService.searchPracticeDataByDsoName(dsoId, 100).subscribe(
+      if (this.selectedNameDso) {
+
+      this.gremlinapiService.searchPracticeDataByDsoName(dsoId,this.currentPaginationPage, this.itemsPerPage).subscribe(
         (data: PracticeModel[]) => {
           this.ngxUiLoaderService.stop();
           this.practiceData = data;
@@ -85,23 +85,23 @@ export class PopupLocationComponent {
         },
         (error) => {
           this.ngxUiLoaderService.stop();
-          this.showErrorMessage('Error loading practice data');
+          //this.showErrorMessage('Error loading practice data');
         }
       );
       // Handle dsoId as needed, keeping in mind that selectedDso might be undefined
     }else{
-      this.gremlinapiService.searchPracticeDataByStateByStateOrName(this.searchState, this.searchName, this.selectedNameDso ).subscribe(
+      this.gremlinapiService.searchPracticeDataByStateByStateOrName(this.searchState, this.searchName, dsoId,this.currentPaginationPage,this.itemsPerPage).subscribe(
         (data: PracticeModel[]) => {
           this.ngxUiLoaderService.stop();
           this.practiceData = data;
           this.practiceColumns = this.createDataGridColumnsForPractice();
           this.totalItems = data.length;
           this.currentPaginationPage = 1;
-         // this.showSuccessMessage('Practice data fetched successfully.'); 
+          //this.showSuccessMessage('Practice data fetched successfully.'); 
         },
         (error) => {
           this.ngxUiLoaderService.stop();
-          this.showErrorMessage('Error loading practice data');
+          //this.showErrorMessage('Error loading practice data');
         }
       );
     }

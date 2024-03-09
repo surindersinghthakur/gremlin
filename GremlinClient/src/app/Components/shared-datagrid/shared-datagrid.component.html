@@ -11,8 +11,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let row of displayedData; let i = index" (click)="onRowClick(i + ((currentPaginationPage - 1) * itemsPerPage), row)"
-        [class.highlight]="selectedRowIndex === i">
+      <tr *ngFor="let row of data; let i = index" (click)="onRowClick(i, row)" [class.highlight]="selectedRowIndex === i">
         <th scope="row" *ngIf="showCheckboxColumn">
           <input type="checkbox" [checked]="row.selected" (change)="toggleCheckbox(row)" />
         </th>
@@ -20,11 +19,4 @@
       </tr>
     </tbody>
   </table>
-
-  <!-- Pagination controls -->
-  <div class="pagination-controls" style="text-align: right;">
-    <button type="button" class="btn btn-primary btn-sm" (click)="changePages(currentPaginationPage - 1)" [disabled]="currentPaginationPage === 1">Previous</button>
-    <span class="m-1">{{ currentPaginationPage }}</span>
-    <button type="button" class="btn btn-primary btn-sm" (click)="changePages(currentPaginationPage + 1)" [disabled]="currentPaginationPage === totalPages">Next</button>
-  </div>
 </div>

@@ -1,0 +1,71 @@
+<div class="m-2">
+    <div class="form-group row">
+      <!--(ngSubmit)="onSaveClick()" -->
+        <form #dsoForm="ngForm">
+            <div class="row">
+                <label for="name" class="col-sm-1 col-form-label">Name:</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control form-control-sm" id="name" name="name" [(ngModel)]="dsoPayload.name" required placeholder="Name">
+                </div>
+                
+                <label for="address" class="col-sm-1 col-form-label fs-6">Address:</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control form-control-sm" id="address" name="address" [(ngModel)]="dsoPayload.address" required placeholder="Address">
+                </div>
+            
+            
+                <label for="city" class="col-sm-1 col-form-label fs-6">City:</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control form-control-sm" id="city" name="city" [(ngModel)]="dsoPayload.city" required placeholder="City">
+                </div>
+            </div>
+              
+            <div class="row">
+                <label for="state" class="col-sm-1 col-form-label fs-6">State:</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control form-control-sm" id="state" name="state" [(ngModel)]="dsoPayload.state" required placeholder="State">
+                </div>
+            
+                <label for="postalCode" class="col-sm-1 col-form-label fs-6">Code:</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control form-control-sm" id="postalCode" name="postalCode" [(ngModel)]="dsoPayload.postalCode" required placeholder="Postal Code">
+                </div>
+            
+                <label for="country" class="col-sm-1 col-form-label fs-6">Country:</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control form-control-sm" id="country" name="country" [(ngModel)]="dsoPayload.country" required placeholder="Country">
+                </div>
+            </div>
+              
+            <div class="row">
+                <label for="phone" class="col-sm-1 col-form-label fs-6">Phone:</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control form-control-sm" id="phone" name="phone" [(ngModel)]="dsoPayload.phone" required placeholder="Phone">
+                </div>
+            
+                <label for="phoneNumber" class="col-sm-1 col-form-label fs-6">Phone#:</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control form-control-sm" id="phoneNumber" name="phoneNumber" [(ngModel)]="dsoPayload.phoneNumber" required placeholder="Phone Number">
+                </div>
+            
+                <label for="email" class="col-sm-1 col-form-label fs-6">Email:</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control form-control-sm" id="email" name="email" [(ngModel)]="dsoPayload.email" required placeholder="Email">
+                </div>
+            </div>
+
+            <div class="row">
+                <label for="website" class="col-sm-1 col-form-label fs-6">Website:</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control form-control-sm" id="website" name="website" [(ngModel)]="dsoPayload.website" required placeholder="Website">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+      <div class="text-end col-12">
+          <button type="submit" class="btn btn-primary btn-sm me-2" (click)="onSaveClick()">Save</button>
+          <button type="submit" class="btn btn-primary btn-sm" (click)="onCloseClick()">Close</button>
+      </div>
+  </div>
+</div>

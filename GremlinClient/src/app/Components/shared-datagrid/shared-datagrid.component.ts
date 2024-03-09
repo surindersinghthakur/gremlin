@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, ChangeDetectorRef, HostBinding, SimpleChanges   } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, ChangeDetectorRef, HostBinding } from '@angular/core';
 import { DataGridColumns } from 'src/app/models/data-grid-columns';
 
 @Component({
@@ -31,32 +31,14 @@ export class SharedDatagridComponent implements OnChanges{
   selectedRowIndex: number = -1;
   sortColumn: string | null = null;
   sortDirection: 'asc' | 'desc' | null = null;
-  //for pagination
-  @Input() currentPaginationPage: number = 1;
-  @Input() itemsPerPage: number = 10;
-  @Input() totalItems: number = 0;
-  @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
-  displayedData: any[] = [];
 
   constructor(private cdr: ChangeDetectorRef) { }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['data'] || changes['currentPage'] || changes['itemsPerPage']) {
-      this.updateDisplayedData();
-      this.calculateTotalPages();
+  ngOnChanges() {
+    if (this.data) {
+      this.totalPages = Math.ceil(this.data.length / this.pageSize);
     }
   }
-
-  calculateTotalPages(): void {
-    this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
-  }
-
-  updateDisplayedData(): void {
-    const startIndex = (this.currentPaginationPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.displayedData = this.data.slice(startIndex, endIndex);
-  }
-
 
   onHeaderClick(column: string) {
     if (this.sortColumn === column) {
@@ -99,13 +81,4 @@ export class SharedDatagridComponent implements OnChanges{
   getPagesArray(): number[] {
     return new Array(this.totalPages).fill(0).map((x, i) => i + 1);
   }
-
-  changePages(newPage: number): void {
-    if (newPage >= 1 && newPage <= this.totalPages) {
-      this.pageChange.emit(newPage);
-      this.currentPaginationPage = newPage === 2 ? 2 : newPage; // Set currentPaginationPage to 2 if newPage is 2
-      this.updateDisplayedData(); // Update displayed data when page changes
-    }
-  }
-
 }

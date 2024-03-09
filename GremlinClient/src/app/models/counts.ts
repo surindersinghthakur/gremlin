@@ -1,5 +1,5 @@
 export interface  Counts {
-  totalDsos: number;
-  totalPractices: number;
-  totalLocations: number;
+  totalDsos: string;
+  totalPractices: string;
+  totalLocations: string;
 }
