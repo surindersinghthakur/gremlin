@@ -83,7 +83,8 @@ export class PracticeComponent {
       ? (Array.isArray(selectedDso.DsoId) ? selectedDso.DsoId[0] : selectedDso.DsoId) || ''
       : '';
       if (this.selectedNameDso) {
-
+      this.selectedCheckboxRows = [];
+      this.currentPaginationPage = 1;
       this.gremlinapiService.searchPracticeDataByDsoName(dsoId,this.currentPaginationPage, this.itemsPerPage).subscribe(
         (result: { data: PracticeModel[], totalRecords: string }) => {
           this.ngxUiLoaderService.stop();
@@ -286,6 +287,7 @@ export class PracticeComponent {
           (response: any) => {
             // Handle the response as needed
             this.showSuccessMessage('Practice moved to new Dso successfully.');
+            // Reset the selectedCheckboxRows after successful API call
             this.ngxUiLoaderService.stop();
           },
           (error) => {
