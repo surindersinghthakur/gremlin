@@ -41,32 +41,35 @@ export class GremlinapiService {
   }
   
   //4th api calling for practice
-  searchPracticeDataByStateByStateOrName(state: string, name: string, dsoId: string,pageNo: number,pazeSize: number): Observable<PracticeModel[]> {
+  searchPracticeDataByStateByStateOrName(state: string, name: string, dsoId: string, pageNo: number, pageSize: number): Observable<{ data: PracticeModel[], totalRecords: string }> {
     const apiUrl = `${this.baseApiUrl}/practice`;
-    
+  
     // Constructing the query parameters using the correct syntax
-    const urlWithParams = `${apiUrl}?state=${state}&name=${name}&dsoId=${dsoId}&pageNo=${pageNo}&pazeSize=${pazeSize}`;
+    const urlWithParams = `${apiUrl}?state=${state}&name=${name}&dsoId=${dsoId}&pageNo=${pageNo}&pazeSize=${pageSize}`;
   
     const output = this.http.get<any>(urlWithParams).pipe(
       map((response: any) => this.parsePracticeApiResponse(response))
     );
     return output;
   }
-  //5th
-  searchPracticeDataByDsoName(dsoId: string, pageNo: number, pazeSize: number): Observable<PracticeModel[]>{
-    const apiUrl = `${this.baseApiUrl}/practice/dso/${dsoId}/?pageNo=${pageNo}&pazeSize=${pazeSize}`;
-    return this.http.get(apiUrl).pipe(
+  
+  //5th get practice data by dsoname
+  searchPracticeDataByDsoName(dsoId: string, pageNo: number, pageSize: number): Observable<{ data: PracticeModel[], totalRecords: string }> {
+    const apiUrl = `${this.baseApiUrl}/practice/dso/${dsoId}/?pageNo=${pageNo}&pazeSize=${pageSize}`;
+    return this.http.get<any>(apiUrl).pipe(
       map((response: any) => this.parsePracticeDataByDsoName(response))
     );
   }
   
-  //6th api call for location data based on practice id
-  searchPracticeIdForLocationData(practiceId: string[]): Observable<LocationModel[]> {
+  
+  //6th api call for location data based on practice id 
+  searchPracticeIdForLocationData(practiceId: string): Observable<{ data: LocationModel[], totalRecords: string }> {
     const apiUrl = `${this.baseApiUrl}/location/${practiceId}`;
     return this.http.get(apiUrl).pipe(
       map((response: any) => this.parseLocationApiResponse(response))
     );
   }
+  
 
   //7th api calling for adding dso
   addPractice(practicePayload: PracticeAddPayload): Observable<any> {
@@ -160,8 +163,8 @@ export class GremlinapiService {
     }
   }
 
-  private parseLocationApiResponse(response: any): LocationModel[] {
-    console.log('Before parsing:', response.data);
+  private parseLocationApiResponse(response: any): { data: LocationModel[], totalRecords: string } {
+    //console.log('Before parsing:', response.data);
     try {
       if (response && response.data) {
         let dataArray: any[];
@@ -175,8 +178,8 @@ export class GremlinapiService {
         }
   
         if (Array.isArray(dataArray)) {
-          return dataArray.map((item: any) => {
-            const practiceModel: LocationModel = {
+          const locationModels = dataArray.map((item: any) => {
+            const locationModel: LocationModel = {
               tenantId: item?.v?.TenantId?.[0] || '',
               locationId: item?.v?.LocationId?.[0] || '',
               practiceId: item?.v?.PracticeId?.[0] || '',
@@ -191,117 +194,129 @@ export class GremlinapiService {
               // Map other properties similarly
             };
   
-            return practiceModel;
+            return locationModel;
           });
+  
+          const totalRecords = response.totalRecords || '';
+  
+          return { data: locationModels, totalRecords };
         } else {
           console.error('Unexpected API response data structure:', response.data);
-          return [];
+          return { data: [], totalRecords: '' };
         }
       } else {
         console.error('Unexpected API response structure:', response);
-        return [];
+        return { data: [], totalRecords: '' };
       }
     } catch (error) {
       console.error('Error parsing API response:', error);
-      return [];
+      return { data: [], totalRecords: '' };
+    }
+  }
+  
+
+  private parsePracticeApiResponse(response: any): { data: PracticeModel[], totalRecords: string } {
+    //console.log('Before parsing:', response);
+    try {
+      if (response && response.data) {
+        let dataArray: any[];
+  
+        // Check if the data is a string representation of an empty array
+        if (typeof response.data === 'string' && response.data.trim() === '[]') {
+          dataArray = [];
+        } else {
+          // Parse the data as JSON
+          dataArray = JSON.parse(response.data);
+        }
+  
+        if (Array.isArray(dataArray)) {
+          const practiceModels = dataArray.map((item: any) => {
+            const practiceModel: PracticeModel = {
+              tenantId: item?.TenantId?.[0] || '',
+              practiceId: item?.PracticeId?.[0] || '',
+              dsoId: item?.DsoId?.[0] || '',
+              name: item?.Name?.[0] || '',
+              address: item?.Address?.[0] || '',
+              city: item?.City?.[0] || '',
+              state: item?.State?.[0] || '',
+              postalCode: item?.PostalCode?.[0] || '',
+              longitude: item?.Longitude?.[0] || '',
+              latitude: item?.Latitude?.[0] || '',
+              zone: item?.Zone?.[0] || ''
+              // Map other properties similarly
+            };
+  
+            return practiceModel;
+          });
+  
+          const totalRecords = response.totalRecords || '';
+  
+          return { data: practiceModels, totalRecords };
+        } else {
+          console.error('Unexpected API response data structure:', response.data);
+          return { data: [], totalRecords: '' };
+        }
+      } else {
+        console.error('Unexpected API response structure:', response);
+        return { data: [], totalRecords: '' };
+      }
+    } catch (error) {
+      console.error('Error parsing API response:', error);
+      return { data: [], totalRecords: '' };
     }
   }
 
-  private parsePracticeApiResponse(response: any): PracticeModel[] {
-    console.log('Before parsing:', response.data);
-  try {
-    if (response && response.data) {
-      let dataArray: any[];
-
-      // Check if the data is a string representation of an empty array
-      if (typeof response.data === 'string' && response.data.trim() === '[]') {
-        dataArray = [];
+  private parsePracticeDataByDsoName(response: any): { data: PracticeModel[], totalRecords: string } {
+    //console.log('Before parsing:', response.data);
+    try {
+      if (response && response.data) {
+        let dataArray: any[];
+  
+        // Check if the data is a string representation of an empty array
+        if (typeof response.data === 'string' && response.data.trim() === '[]') {
+          dataArray = [];
+        } else {
+          // Parse the data as JSON
+          dataArray = JSON.parse(response.data);
+        }
+  
+        if (Array.isArray(dataArray)) {
+          const practiceModels = dataArray.map((item: any) => {
+            const practiceModel: PracticeModel = {
+              tenantId: item?.v?.TenantId?.[0] || '',
+              practiceId: item?.v?.PracticeId?.[0] || '',
+              dsoId: item?.v?.DsoId?.[0] || '',
+              name: item?.v?.Name?.[0] || '',
+              address: item?.v?.Address?.[0] || '',
+              city: item?.v?.City?.[0] || '',
+              state: item?.v?.State?.[0] || '',
+              postalCode: item?.v?.PostalCode?.[0] || '',
+              longitude: item?.v?.Longitude?.[0] || '',
+              latitude: item?.v?.Latitude?.[0] || '',
+              zone: item?.v?.Zone?.[0] || ''
+              // Map other properties similarly
+            };
+  
+            return practiceModel;
+          });
+  
+          const totalRecords = response.totalRecords || '';
+  
+          return { data: practiceModels, totalRecords };
+        } else {
+          console.error('Unexpected API response data structure:', response.data);
+          return { data: [], totalRecords: '' };
+        }
       } else {
-        // Parse the data as JSON
-        dataArray = JSON.parse(response.data);
+        console.error('Unexpected API response structure:', response);
+        return { data: [], totalRecords: '' };
       }
-
-      if (Array.isArray(dataArray)) {
-        return dataArray.map((item: any) => {
-          const practiceModel: PracticeModel = {
-            tenantId: item?.TenantId?.[0] || '',
-            practiceId: item?.PracticeId?.[0] || '',
-            dsoId: item?.DsoId?.[0] || '',
-            name: item?.Name?.[0] || '',
-            address: item?.Address?.[0] || '',
-            city: item?.City?.[0] || '',
-            state: item?.State?.[0] || '',
-            postalCode: item?.PostalCode?.[0] || '',
-            longitude: item?.Longitude?.[0] || '',
-            latitude: item?.Latitude?.[0] || '',
-            zone: item?.Zone?.[0] || ''
-            // Map other properties similarly
-          };
-
-          return practiceModel;
-        });
-      } else {
-        console.error('Unexpected API response data structure:', response.data);
-        return [];
-      }
-    } else {
-      console.error('Unexpected API response structure:', response);
-      return [];
+    } catch (error) {
+      console.error('Error parsing API response:', error);
+      return { data: [], totalRecords: '' };
     }
-  } catch (error) {
-    console.error('Error parsing API response:', error);
-    return [];
   }
-
-  } 
-
-  private parsePracticeDataByDsoName(response: any): PracticeModel[] {
-    console.log('Before parsing:', response.data);
-  try {
-    if (response && response.data) {
-      let dataArray: any[];
-
-      // Check if the data is a string representation of an empty array
-      if (typeof response.data === 'string' && response.data.trim() === '[]') {
-        dataArray = [];
-      } else {
-        // Parse the data as JSON
-        dataArray = JSON.parse(response.data);
-      }
-
-      if (Array.isArray(dataArray)) {
-        return dataArray.map((item: any) => {
-          const practiceModel: PracticeModel = {
-            tenantId: item?.v?.TenantId?.[0] || '',
-            practiceId: item?.v?.PracticeId?.[0] || '',
-            dsoId: item?.v?.DsoId?.[0] || '',
-            name: item?.v?.Name?.[0] || '',
-            address: item?.v?.Address?.[0] || '',
-            city: item?.v?.City?.[0] || '',
-            state: item?.v?.State?.[0] || '',
-            postalCode: item?.v?.PostalCode?.[0] || '',
-            longitude: item?.v?.Longitude?.[0] || '',
-            latitude: item?.v?.Latitude?.[0] || '',
-            zone: item?.v?.Zone?.[0] || ''
-            // Map other properties similarly
-          };
-
-          return practiceModel;
-        });
-      } else {
-        console.error('Unexpected API response data structure:', response.data);
-        return [];
-      }
-    } else {
-      console.error('Unexpected API response structure:', response);
-      return [];
-    }
-  } catch (error) {
-    console.error('Error parsing API response:', error);
-    return [];
-  }
-
-  } 
+  
 }
 
 

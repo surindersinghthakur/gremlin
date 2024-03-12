@@ -1,5 +1,5 @@
-.highlight {
-    background-color: #315272;
+:host .table tbody tr.highlight td {
+    background-color: #7898b8;
 }
 
 .table > tbody > tr > td,

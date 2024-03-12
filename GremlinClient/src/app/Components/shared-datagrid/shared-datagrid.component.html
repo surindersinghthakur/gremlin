@@ -11,7 +11,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let row of data; let i = index" (click)="onRowClick(i, row)" [class.highlight]="selectedRowIndex === i">
+      <tr *ngFor="let row of data; let i = index" (click)="onRowClick(i, row, $event)" [class.highlight]="selectedRowIndex === i">
         <th scope="row" *ngIf="showCheckboxColumn">
           <input type="checkbox" [checked]="row.selected" (change)="toggleCheckbox(row)" />
         </th>

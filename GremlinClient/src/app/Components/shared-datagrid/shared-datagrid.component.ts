@@ -62,11 +62,16 @@ export class SharedDatagridComponent implements OnChanges{
     this.selectCheckbox.emit({ checked: row.selected, row });
   }
 
-  onRowClick(rowIndex: number, row: any ) {
-    this.selectedRowIndex = rowIndex;
-    this.selectRow.emit(row);
-    this.cdr.detectChanges();
-    console.log(this.selectedRowIndex); 
+  onRowClick(rowIndex: number, row: any, event: Event) {
+    // Check if the target of the click event is an input with type checkbox
+    const isCheckboxClicked = event.target instanceof HTMLInputElement && event.target.type === 'checkbox';
+  
+    if (!isCheckboxClicked) {
+      this.selectedRowIndex = rowIndex;
+      this.selectRow.emit(row);
+      this.cdr.detectChanges();
+      console.log(this.selectedRowIndex);
+    }
   }
 
   setCurrentPage(page: number) {

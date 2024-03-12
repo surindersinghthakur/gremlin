@@ -75,11 +75,11 @@ export class PopupLocationComponent {
       if (this.selectedNameDso) {
 
       this.gremlinapiService.searchPracticeDataByDsoName(dsoId,this.currentPaginationPage, this.itemsPerPage).subscribe(
-        (data: PracticeModel[]) => {
+        (result: { data: PracticeModel[], totalRecords: string }) => {
           this.ngxUiLoaderService.stop();
-          this.practiceData = data;
+          this.practiceData = result.data;
           this.practiceColumns = this.createDataGridColumnsForPractice();
-          this.totalItems = data.length;
+          this.totalItems = parseInt(result.totalRecords, 10);
           this.currentPaginationPage = 1;
           //this.showSuccessMessage('Practice data fetched successfully.'); 
         },
@@ -91,12 +91,11 @@ export class PopupLocationComponent {
       // Handle dsoId as needed, keeping in mind that selectedDso might be undefined
     }else{
       this.gremlinapiService.searchPracticeDataByStateByStateOrName(this.searchState, this.searchName, dsoId,this.currentPaginationPage,this.itemsPerPage).subscribe(
-        (data: PracticeModel[]) => {
+        (result: { data: PracticeModel[], totalRecords: string }) => {
           this.ngxUiLoaderService.stop();
-          this.practiceData = data;
+          this.practiceData = result.data;
           this.practiceColumns = this.createDataGridColumnsForPractice();
-          this.totalItems = data.length;
-          this.currentPaginationPage = 1;
+          this.totalItems = parseInt(result.totalRecords, 10);
           //this.showSuccessMessage('Practice data fetched successfully.'); 
         },
         (error) => {
@@ -111,7 +110,7 @@ export class PopupLocationComponent {
   createDataGridColumnsForPractice(): DataGridColumns[] {
     return [
       { key: 'name', displayText: 'Name' },
-      //{ key: 'dsoId', displayText: 'Dso Id' },
+      //{ key: 'practiceId', displayText: 'Dso Id' },
       { key: 'address', displayText: 'Address' },
       { key: 'city', displayText: 'City' },
       { key: 'state', displayText: 'State' },
@@ -172,7 +171,8 @@ export class PopupLocationComponent {
       const moveToPracticeId = Array.isArray(this.selectedCheckboxRows[0].practiceId)
         ? this.selectedCheckboxRows[0].practiceId[0]
         : String(this.selectedCheckboxRows[0].practiceId);
-  
+
+      this.ngxUiLoaderService.start();  
       this.gremlinapiService.moveLocationsToPractice(this.currentPracticeId, moveToPracticeId, this.locationIdsArray).subscribe(
         (response: any) => {
           // Handle the API response here
@@ -180,12 +180,14 @@ export class PopupLocationComponent {
           this.showSnackBar('Locations moved successfully'); // Show success message
           // Optionally, perform any additional actions based on the response
           this.dialogRef.close();
+          this.ngxUiLoaderService.stop();
         },
         (error: any) => {
           // Handle errors from the API call
           console.error('API error:', error);
           this.showSnackBar('Failed to move locations. Please try again.'); // Show error message
           this.dialogRef.close();
+          this.ngxUiLoaderService.stop();
           // Optionally, perform any actions based on the error
         }
       );

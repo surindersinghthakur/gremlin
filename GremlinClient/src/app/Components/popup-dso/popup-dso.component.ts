@@ -33,6 +33,7 @@ export class PopupDsoComponent {
   }
 
   onSaveClick() {
+    this.ngxUiLoaderService.start();
     this.gremlinapiService.addDso(this.dsoPayload).subscribe(
       (response: any) => {
         // Handle the success response if needed
@@ -40,11 +41,15 @@ export class PopupDsoComponent {
         this.showSuccessMessage('DSO added successfully.'); // Display success message
         // Optionally, reset the form after successful submission
         this.resetForm();
+        this.ngxUiLoaderService.stop();
+        this.dialogRef.close();
       },
       (error: any) => {
         // Handle the error response if needed
         console.error('Error adding DSO:', error);
         this.showErrorMessage('Failed to add DSO. Please try again.'); // Display error message
+        this.ngxUiLoaderService.stop();
+        this.dialogRef.close();
       }
     );
   }
@@ -88,7 +93,9 @@ export class PopupDsoComponent {
   }
 
   onCloseClick(): void{
+    this.ngxUiLoaderService.start();
     this.dialogRef.close();
+    this.ngxUiLoaderService.stop();
   }
 
 

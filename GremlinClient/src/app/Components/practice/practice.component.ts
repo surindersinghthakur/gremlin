@@ -43,10 +43,19 @@ export class PracticeComponent {
   practiceIdsAndDsoIds: MovePracticeToNewDso[] = [];
 
   //for pagination
+  //1st practice grid
   @Input() currentPaginationPage: number = 1;
   @Input() itemsPerPage: number = 10;
-  @Input() totalItems: number = 0;
+  @Input() practiceTotalItems: number = 0;
+  
   @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
+
+  // for location grid
+  @Input() currentLocationPaginationPage: number = 1;
+  @Input() locationTotalItems: number = 0;
+
+
+
   displayedData: any[] = [];
   
   
@@ -76,11 +85,11 @@ export class PracticeComponent {
       if (this.selectedNameDso) {
 
       this.gremlinapiService.searchPracticeDataByDsoName(dsoId,this.currentPaginationPage, this.itemsPerPage).subscribe(
-        (data: PracticeModel[]) => {
+        (result: { data: PracticeModel[], totalRecords: string }) => {
           this.ngxUiLoaderService.stop();
-          this.practiceData = data;
+          this.practiceData = result.data;
           this.practiceColumns = this.createDataGridColumnsForPractice();
-          this.totalItems = data.length;
+          this.practiceTotalItems = parseInt(result.totalRecords, 10);
           //this.showSuccessMessage('Practice data fetched successfully.'); 
         },
         (error) => {
@@ -91,11 +100,11 @@ export class PracticeComponent {
       // Handle dsoId as needed, keeping in mind that selectedDso might be undefined
     }else{
       this.gremlinapiService.searchPracticeDataByStateByStateOrName(this.searchState, this.searchName, dsoId,this.currentPaginationPage,this.itemsPerPage).subscribe(
-        (data: PracticeModel[]) => {
+        (result: { data: PracticeModel[], totalRecords: string }) => {
           this.ngxUiLoaderService.stop();
-          this.practiceData = data;
+          this.practiceData = result.data;
           this.practiceColumns = this.createDataGridColumnsForPractice();
-          this.totalItems = data.length;
+          this.practiceTotalItems = parseInt(result.totalRecords, 10);
           //this.showSuccessMessage('Practice data fetched successfully.'); 
         },
         (error) => {
@@ -110,7 +119,7 @@ export class PracticeComponent {
   createDataGridColumnsForPractice(): DataGridColumns[] {
     return [
       { key: 'name', displayText: 'Name' },
-      { key: 'practiceId', displayText: 'Dso Id' },
+      //{ key: 'dsoId', displayText: 'Dso Id' },
       { key: 'address', displayText: 'Address' },
       { key: 'city', displayText: 'City' },
       { key: 'state', displayText: 'State' },
@@ -144,10 +153,11 @@ export class PracticeComponent {
     this.ngxUiLoaderService.start();
     this.locationData = this.locationDataActual.filter(cond => cond.practiceId === selectedRow.practiceId);
     this.gremlinapiService.searchPracticeIdForLocationData(selectedRow.practiceId).subscribe(
-      (data: LocationModel[]) => {
+      (result: { data: LocationModel[], totalRecords: string }) => {
         this.ngxUiLoaderService.stop();
-        this.locationData = data;
+        this.locationData = result.data;
         this.locationColumns = this.createDataGridColumnsForLocation();
+        this.locationTotalItems = parseInt(result.totalRecords, 10);
         //this.showSuccessMessage('Location data fetched successfully.'); 
       },
       (error) => {
@@ -172,7 +182,7 @@ export class PracticeComponent {
   
       // Subscribe to the afterClosed event to handle any data returned from the dialog
       this.dialogRef.afterClosed().subscribe(result => {
-        console.log('Dialog closed with result:', result);
+        //console.log('Dialog closed with result:', result);
         this.dialogRef = undefined; // Reset the dialogRef when the dialog is closed
         // You can perform any additional actions here if needed
       });
@@ -193,7 +203,7 @@ export class PracticeComponent {
   
       // Subscribe to the afterClosed event to handle any data returned from the dialog
       this.dialogRef1.afterClosed().subscribe(result => {
-        console.log('Dialog closed with result:', result);
+        //console.log('Dialog closed with result:', result);
         this.dialogRef1 = undefined; // Reset the dialogRef when the dialog is closed
         // You can perform any additional actions here if needed
       });
@@ -201,7 +211,7 @@ export class PracticeComponent {
   }
 
   //practice checkbox and move logic
-  onCheckboxSelected(checked: boolean, row: PracticeModel): void {
+  onPracticeCheckboxSelected(checked: boolean, row: PracticeModel): void {
     if (checked) {
       // Checkbox is checked, add to the selectedCheckboxRows array
       this.selectedCheckboxRows.push(row);
@@ -270,15 +280,17 @@ export class PracticeComponent {
             : practice.dsoId
         }));
 
-  
+        this.ngxUiLoaderService.start();
         // Make API call using DsoId and PracticeIds
         this.gremlinapiService.movePracticesToNewDso(dsoId, practiceIdsAndDsoIds).subscribe(
           (response: any) => {
             // Handle the response as needed
             this.showSuccessMessage('Practice moved to new Dso successfully.');
+            this.ngxUiLoaderService.stop();
           },
           (error) => {
             this.showErrorMessage('Error making API call:');
+            this.ngxUiLoaderService.stop();
           }
         );
       } else {
@@ -375,8 +387,8 @@ export class PracticeComponent {
       const locationIdsArray = this.selectedLocationCheckboxRows.map(row => row.locationId);
   
       // Log the extracted data for verification (you can remove this in the final code)
-      console.log('First Row Practice ID:', firstRowPracticeId);
-      console.log('Location IDs Array:', locationIdsArray);
+      //console.log('First Row Practice ID:', firstRowPracticeId);
+      //console.log('Location IDs Array:', locationIdsArray);
   
       // Open the LocationPopupComponent as a pop-up with the extracted data
       const dialogRef = this.dialog.open(PopupLocationComponent, {
@@ -389,7 +401,7 @@ export class PracticeComponent {
   
       // Subscribe to the afterClosed event to handle actions after the pop-up is closed
       dialogRef.afterClosed().subscribe(result => {
-        console.log('The LocationPop-up was closed', result);
+        //console.log('The LocationPop-up was closed', result);
         // Perform actions based on the result if needed
       });
     }

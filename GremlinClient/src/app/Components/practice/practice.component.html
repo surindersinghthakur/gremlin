@@ -11,7 +11,7 @@
     </div>
 
     <div class="col-sm-4 d-flex align-items-center">
-      <label class="me-2" for="nameDropdown" style="font-weight: bold;">Select Dso:</label>
+      <label class="me-2" for="nameDropdown" style="font-weight: bold;">Or Dso:</label>
       <div style="width: 200px;">
         <select id="nameDropdown" [(ngModel)]="selectedNameDso" class="form-control form-control-sm">
           <option value="">None</option> <!-- Empty value for no selection -->
@@ -47,17 +47,21 @@
           [columns]="practiceColumns"
           [showCheckboxColumn]="showCheckboxColumn"
           (selectRow)="onPracticeRowSelected($event)"
-          (selectCheckbox)="onCheckboxSelected($event.checked, $event.row)"
+          (selectCheckbox)="onPracticeCheckboxSelected($event.checked, $event.row)"
           [maxHeight]="'400px'"
         ></app-shared-datagrid>
       </div>
 
-      <div class="row">
+      <div class="row mt-2">
+        <!-- Show total records -->
         <!--Pagination controls -->
         <div class="pagination-controls" style="text-align: right;">
+
+          <span class="ml-auto me-5"  style="text-align: right; font-weight: bold;">Total Records: {{ practiceTotalItems | number: '1.0-0' }}</span>
+
         <button type="button" class="btn btn-primary btn-sm" (click)="fetchDataForPracticeGrids(currentPaginationPage - 1)" [disabled]="currentPaginationPage === 1">Previous</button>
         <span class="m-1">{{ currentPaginationPage }}</span>
-        <button type="button" class="btn btn-primary btn-sm" (click)="fetchDataForPracticeGrids(currentPaginationPage + 1)" >Next</button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="fetchDataForPracticeGrids(currentPaginationPage + 1)" [disabled]="practiceData.length < 10">Next</button>
         </div>
       </div>
     </div>
@@ -88,8 +92,20 @@
           ></app-shared-datagrid>
         </div>
 
-        <div class="row" *ngIf="selectedLocationCheckboxRows.length > 0">
+        <div class="row mt-2">
+          <!-- Show total records -->
+          <!--Pagination controls -->
+          <div class="pagination-controls" style="text-align: right;">
+  
+            <span class="ml-auto me-5"  style="text-align: right; font-weight: bold;">Total Records: {{ locationTotalItems | number: '1.0-0' }}</span>
+  
+          <!--<button type="button" class="btn btn-primary btn-sm" (click)="fetchDataForPracticeGrids(currentPaginationPage - 1)" [disabled]="currentPaginationPage === 1">Previous</button>
+          <span class="m-1">{{ currentPaginationPage }}</span>
+          <button type="button" class="btn btn-primary btn-sm" (click)="fetchDataForPracticeGrids(currentPaginationPage + 1)" [disabled]="practiceData.length < 10">Next</button>
+          </div>-->
+        </div>
 
+        <div class="row" *ngIf="selectedLocationCheckboxRows.length > 0">
           <!-- Button to trigger the pop-up for location -->
         <div class="col-3 mt-2">
           <button type="button" class="btn btn-primary btn-sm m-2" (click)="onLocationsSelected()">Acquire Selected Location(s)</button>
