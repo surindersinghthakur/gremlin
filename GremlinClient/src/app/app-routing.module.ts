@@ -16,7 +16,7 @@ const routes: Routes = [
     component: DsoComponent
   },
   {
-    path: 'practice',
+    path: '',
     component: PracticeComponent
   },
   {

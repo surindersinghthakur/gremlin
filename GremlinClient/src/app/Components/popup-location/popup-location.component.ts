@@ -114,9 +114,9 @@ export class PopupLocationComponent {
       { key: 'address', displayText: 'Address' },
       { key: 'city', displayText: 'City' },
       { key: 'state', displayText: 'State' },
-      { key: 'postalCode', displayText: 'Zip' },
-      { key: 'longitude', displayText: 'Longitude' },
+      //{ key: 'postalCode', displayText: 'Zip' },
       { key: 'latitude', displayText: 'Latitude' },
+      { key: 'longitude', displayText: 'Longitude' },
       { key: 'zone', displayText: 'Zone' },
     ];
   }

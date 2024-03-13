@@ -124,9 +124,9 @@ export class PracticeComponent {
       { key: 'address', displayText: 'Address' },
       { key: 'city', displayText: 'City' },
       { key: 'state', displayText: 'State' },
-      { key: 'postalCode', displayText: 'Zip' },
-      { key: 'longitude', displayText: 'Longitude' },
+      //{ key: 'postalCode', displayText: 'Zip' },
       { key: 'latitude', displayText: 'Latitude' },
+      { key: 'longitude', displayText: 'Longitude' },
       { key: 'zone', displayText: 'Zone' },
     ];
   }
@@ -138,10 +138,11 @@ export class PracticeComponent {
       { key: 'address', displayText: 'Address' },
       { key: 'city', displayText: 'City' },
       { key: 'state', displayText: 'State' },
-      { key: 'postalCode', displayText: 'Zip' },
-      { key: 'reportsToRegion', displayText: 'Reporting Zone' },
-      { key: 'longitude', displayText: 'Longitude' },
+      //{ key: 'postalCode', displayText: 'Zip' },
+      //{ key: 'reportsToRegion', displayText: 'Reporting Zone' },
       { key: 'latitude', displayText: 'Latitude' },
+      { key: 'longitude', displayText: 'Longitude' },
+      
     ];
   }
 
