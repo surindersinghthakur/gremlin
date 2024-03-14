@@ -41,11 +41,11 @@ export class GremlinapiService {
   }
   
   //4th api calling for practice
-  searchPracticeDataByStateByStateOrName(state: string, name: string, dsoId: string, pageNo: number, pageSize: number): Observable<{ data: PracticeModel[], totalRecords: string }> {
+  searchPracticeDataByStateByStateOrNameOrZone(state: string, name: string, zone: string, dsoId: string, pageNo: number, pageSize: number): Observable<{ data: PracticeModel[], totalRecords: string }> {
     const apiUrl = `${this.baseApiUrl}/practice`;
   
     // Constructing the query parameters using the correct syntax
-    const urlWithParams = `${apiUrl}?state=${state}&name=${name}&dsoId=${dsoId}&pageNo=${pageNo}&pazeSize=${pageSize}`;
+    const urlWithParams = `${apiUrl}?state=${state}&name=${name}&zone=${zone}&dsoId=${dsoId}&pageNo=${pageNo}&pazeSize=${pageSize}`;
   
     const output = this.http.get<any>(urlWithParams).pipe(
       map((response: any) => this.parsePracticeApiResponse(response))

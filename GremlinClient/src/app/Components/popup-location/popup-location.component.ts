@@ -45,6 +45,10 @@ export class PopupLocationComponent {
   currentPaginationPage: number = 1;
   itemsPerPage: number = 50; // Set your desired number of items per page
   totalItems: number = 0;
+
+  //for zone dropdown
+  selectedZone: string = ''; // Initialize with an empty string or default value
+  zonesList: string[] = ['North', 'South', 'East', 'West']; // Your list of zones
   
 
   constructor(private gremlinapiService: GremlinapiService, private ngxUiLoaderService: NgxUiLoaderService, private dialog: MatDialog, private elementRef: ElementRef,
@@ -89,8 +93,23 @@ export class PopupLocationComponent {
         }
       );
       // Handle dsoId as needed, keeping in mind that selectedDso might be undefined
-    }else{
-      this.gremlinapiService.searchPracticeDataByStateByStateOrName(this.searchState, this.searchName, dsoId,this.currentPaginationPage,this.itemsPerPage).subscribe(
+    }else if(this.selectedZone){
+      this.gremlinapiService.searchPracticeDataByStateByStateOrNameOrZone(this.searchState, this.searchName, this.selectedZone, dsoId,this.currentPaginationPage,this.itemsPerPage).subscribe(
+        (result: { data: PracticeModel[], totalRecords: string }) => {
+          this.ngxUiLoaderService.stop();
+          this.practiceData = result.data;
+          this.practiceColumns = this.createDataGridColumnsForPractice();
+          this.totalItems = parseInt(result.totalRecords, 10);
+          //this.showSuccessMessage('Practice data fetched successfully.'); 
+        },
+        (error) => {
+          this.ngxUiLoaderService.stop();
+          //this.showErrorMessage('Error loading practice data');
+        }
+      );
+    }
+    else{
+      this.gremlinapiService.searchPracticeDataByStateByStateOrNameOrZone(this.searchState, this.searchName,this.selectedZone, dsoId,this.currentPaginationPage,this.itemsPerPage).subscribe(
         (result: { data: PracticeModel[], totalRecords: string }) => {
           this.ngxUiLoaderService.stop();
           this.practiceData = result.data;

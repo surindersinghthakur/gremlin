@@ -57,6 +57,10 @@ export class PracticeComponent {
 
 
   displayedData: any[] = [];
+
+  //for zone dropdown
+  selectedZone: string = ''; // Initialize with an empty string or default value
+  zonesList: string[] = ['North', 'South', 'East', 'West']; // Your list of zones
   
   
 
@@ -82,6 +86,7 @@ export class PracticeComponent {
       const dsoId: string = selectedDso
       ? (Array.isArray(selectedDso.DsoId) ? selectedDso.DsoId[0] : selectedDso.DsoId) || ''
       : '';
+
       if (this.selectedNameDso) {
       this.selectedCheckboxRows = [];
       this.currentPaginationPage = 1;
@@ -99,8 +104,24 @@ export class PracticeComponent {
         }
       );
       // Handle dsoId as needed, keeping in mind that selectedDso might be undefined
-    }else{
-      this.gremlinapiService.searchPracticeDataByStateByStateOrName(this.searchState, this.searchName, dsoId,this.currentPaginationPage,this.itemsPerPage).subscribe(
+    }
+    else if(this.selectedZone){
+      this.gremlinapiService.searchPracticeDataByStateByStateOrNameOrZone(this.searchState, this.searchName, this.selectedZone, dsoId,this.currentPaginationPage,this.itemsPerPage).subscribe(
+        (result: { data: PracticeModel[], totalRecords: string }) => {
+          this.ngxUiLoaderService.stop();
+          this.practiceData = result.data;
+          this.practiceColumns = this.createDataGridColumnsForPractice();
+          this.practiceTotalItems = parseInt(result.totalRecords, 10);
+          //this.showSuccessMessage('Practice data fetched successfully.'); 
+        },
+        (error) => {
+          this.ngxUiLoaderService.stop();
+          //this.showErrorMessage('Error loading practice data');
+        }
+      );
+    }
+    else{
+      this.gremlinapiService.searchPracticeDataByStateByStateOrNameOrZone(this.searchState, this.searchName, this.selectedZone, dsoId,this.currentPaginationPage,this.itemsPerPage).subscribe(
         (result: { data: PracticeModel[], totalRecords: string }) => {
           this.ngxUiLoaderService.stop();
           this.practiceData = result.data;
@@ -300,6 +321,9 @@ export class PracticeComponent {
         this.showErrorMessage('Selected Dso not found.');
       }
     }
+    else{
+      this.showErrorMessage('Please select a Dso name');
+    }
   }
 
   //location checkbox selection and move logic
@@ -395,7 +419,7 @@ export class PracticeComponent {
   
       // Open the LocationPopupComponent as a pop-up with the extracted data
       const dialogRef = this.dialog.open(PopupLocationComponent, {
-        width: '1000px', // Set the width as needed
+        width: '1100px', // Set the width as needed
         data: {
           firstRowPracticeId: firstRowPracticeId,
           locationIdsArray: locationIdsArray
