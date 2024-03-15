@@ -57,7 +57,7 @@ export class PopupLocationComponent {
       this.currentPracticeId = data.firstRowPracticeId;
       this.locationIdsArray = data.locationIdsArray;
 
-     this.onPracticeRowSelectionformoveingLocations()
+     this.onPracticeRowSelectionformovingLocations()
   }
 
   ngOnInit(): void {
@@ -77,7 +77,8 @@ export class PopupLocationComponent {
       ? (Array.isArray(selectedDso.DsoId) ? selectedDso.DsoId[0] : selectedDso.DsoId) || ''
       : '';
       if (this.selectedNameDso) {
-
+      this.selectedCheckboxRows = [];
+      this.currentPaginationPage = 1;
       this.gremlinapiService.searchPracticeDataByDsoName(dsoId,this.currentPaginationPage, this.itemsPerPage).subscribe(
         (result: { data: PracticeModel[], totalRecords: string }) => {
           this.ngxUiLoaderService.stop();
@@ -185,7 +186,7 @@ export class PopupLocationComponent {
     );
   }
 
-  onPracticeRowSelectionformoveingLocations(): void {
+  onPracticeRowSelectionformovingLocations(): void {
     if (this.selectedCheckboxRows.length > 0) {
       const moveToPracticeId = Array.isArray(this.selectedCheckboxRows[0].practiceId)
         ? this.selectedCheckboxRows[0].practiceId[0]
@@ -199,6 +200,8 @@ export class PopupLocationComponent {
           this.showSnackBar('Locations moved successfully'); // Show success message
           // Optionally, perform any additional actions based on the response
           this.dialogRef.close();
+          //latest
+          this.locationIdsArray = [];
           this.ngxUiLoaderService.stop();
         },
         (error: any) => {
