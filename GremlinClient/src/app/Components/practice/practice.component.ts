@@ -425,7 +425,7 @@ export class PracticeComponent {
           locationIdsArray: locationIdsArray
         }
       });
-  
+      this.selectedLocationCheckboxRows.length = 0;
       // Subscribe to the afterClosed event to handle actions after the pop-up is closed
       dialogRef.afterClosed().subscribe(result => {
         //console.log('The LocationPop-up was closed', result);
